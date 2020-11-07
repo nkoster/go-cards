@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 const CARDSNEEDED = 52
 const FIRSTCARD = "Ace of Hearts"
@@ -21,4 +24,15 @@ func TestNewDeck(t *testing.T) {
 		t.Errorf("\nDeck does not have %s as the last card, but %v", LASTCARD, d[len(d)-1])
 	}
 
+}
+
+func TestSaveDeckAndReadDeck(t *testing.T) {
+	testFile := "_decktesting"
+	os.Remove(testFile)
+	d := newDeck()
+	d.saveDeck(testFile)
+	d = readDeck(testFile)
+	if d[len(d)-1] != LASTCARD {
+		t.Errorf("\nDeck file %s write and read failed", testFile)
+	}
 }
